@@ -2,12 +2,24 @@
 require_once("konf.php");
 include("header.php");
 global $yhendus;
-if(!empty($_REQUEST["teooriatulemus"])){
-    $kask=$yhendus->prepare(
-        "UPDATE jalgrattaeksam SET teooriatulemus=? WHERE id=?");
-    $kask->bind_param("ii", $_REQUEST["teooriatulemus"], $_REQUEST["id"]); $kask->execute();
+
+if (isset($_REQUEST["teooriatulemus"], $_REQUEST["id"])) {
+
+    $tulemus = intval($_REQUEST["teooriatulemus"]);
+    $id = intval($_REQUEST["id"]);
+
+    if ($tulemus < 10) {
+        $kask = $yhendus->prepare("UPDATE jalgrattaeksam SET teooriatulemus=?,slaalom=2,ringtee=2,t2nav=2 WHERE id=?"
+        );
+        $kask->bind_param("ii", $tulemus, $id);
+    } else {
+        $kask = $yhendus->prepare("UPDATE jalgrattaeksam SET teooriatulemus=? WHERE id=?");
+        $kask->bind_param("ii", $tulemus, $id);
+    }
+    $kask->execute();
 }
-$kask=$yhendus->prepare("SELECT id, eesnimi, perekonnanimi   FROM jalgrattaeksam WHERE teooriatulemus=-1");
+
+$kask = $yhendus->prepare("SELECT id, eesnimi, perekonnanimi FROM jalgrattaeksam WHERE teooriatulemus = -1");
 $kask->bind_result($id, $eesnimi, $perekonnanimi);
 $kask->execute();
 ?>

@@ -1,23 +1,37 @@
 <?php
 require_once("konf.php");
-global $yhendus;
 include("header.php");
+
+global $yhendus;
+
+
+if(isset($_REQUEST["kustuta"])){
+    $kask = $yhendus->prepare("DELETE FROM jalgrattaeksam WHERE id=?");
+    $kask->bind_param("i", $_REQUEST["kustuta"]);
+    $kask->execute();
+    $kask->close();
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit;
+}
+
 if(!empty($_REQUEST["vormistamine_id"])){
-    $kask=$yhendus->prepare(
-        "UPDATE jalgrattaeksam SET luba=1 WHERE id=?");
+    $kask = $yhendus->prepare("UPDATE jalgrattaeksam SET luba=1 WHERE id=?");
     $kask->bind_param("i", $_REQUEST["vormistamine_id"]);
     $kask->execute();
+    $kask->close();
 }
-$kask=$yhendus->prepare(
-    "SELECT id, eesnimi, perekonnanimi, teooriatulemus,  
- slaalom, ringtee, t2nav, luba FROM jalgrattaeksam;");
-$kask->bind_result($id, $eesnimi, $perekonnanimi, $teooriatulemus,   $slaalom, $ringtee, $t2nav, $luba);
+
+$kask = $yhendus->prepare(
+    "SELECT id, eesnimi, perekonnanimi, teooriatulemus, slaalom, ringtee, t2nav, luba 
+     FROM jalgrattaeksam"
+);
 $kask->execute();
+$kask->bind_result($id, $eesnimi, $perekonnanimi, $teooriatulemus, $slaalom, $ringtee, $t2nav, $luba);
 
 function asenda($nr){
-    if($nr==-1){return ".";} //tegemata
-    if($nr== 1){return "korras";}
-    if($nr== 2){return "ebaõnnestunud";}
+    if($nr == -1) return "."; // tegemata
+    if($nr == 1) return "korras";
+    if($nr == 2) return "ebaõnnestunud";
     return "Tundmatu number";
 }
 ?>
@@ -37,16 +51,19 @@ function asenda($nr){
         <th>Ringtee</th>
         <th>Tänavasõit</th>
         <th>Lubade väljastus</th>
+        <th>Eemalda</th>
     </tr>
     <?php
     while($kask->fetch()){
         $asendatud_slaalom=asenda($slaalom);
         $asendatud_ringtee=asenda($ringtee);
         $asendatud_t2nav=asenda($t2nav);
+        $kustutalink = "<a href='?kustuta=$id'>Eemalda</a>";
         $loalahter=".";
         if($luba==1){$loalahter="Väljastatud";}
         if($luba==-1 and $t2nav==1){
             $loalahter="<a href='?vormistamine_id=$id'>Vormista load</a>";  }
+
         echo " 
  <tr> 
  <td>$eesnimi</td> 
@@ -56,6 +73,7 @@ function asenda($nr){
  <td>$asendatud_ringtee</td> 
  <td>$asendatud_t2nav</td> 
  <td>$loalahter</td> 
+<td>$kustutalink</td>
  </tr> 
  ";
     }
