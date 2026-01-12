@@ -2,11 +2,28 @@
 require_once("konf.php");
 include("header.php");
 global $yhendus;
-if(isSet($_REQUEST["sisestusnupp"])){
-    $kask=$yhendus->prepare(
-        "INSERT INTO jalgrattaeksam(eesnimi, perekonnanimi) VALUES (?, ?)"); $kask->bind_param("ss", $_REQUEST["eesnimi"], $_REQUEST["perekonnanimi"]); $kask->execute();
-    $yhendus->close();
-    header("Location: $_SERVER[PHP_SELF]?lisatudeesnimi=$_REQUEST[eesnimi]"); exit();
+
+
+
+if (isset($_REQUEST["sisestusnupp"])) {
+
+    $eesnimi = $_REQUEST["eesnimi"];
+    $perekonnanimi = $_REQUEST["perekonnanimi"];
+
+    if (strlen($eesnimi) == 0 || strlen($perekonnanimi) == 0) {
+        $teade = "Nimi ei tohi olla tühi!";
+    } elseif (is_numeric($eesnimi) || is_numeric($perekonnanimi)) {
+        $teade = "Nimi ei tohi olla numbriline!";
+    } else {
+        $kask = $yhendus->prepare(
+            "INSERT INTO jalgrattaeksam(eesnimi, perekonnanimi) VALUES (?, ?)"
+        );
+        $kask->bind_param("ss", $eesnimi, $perekonnanimi);
+        $kask->execute();
+
+        header("Location: Teooriaeksam.php");
+        exit();
+    }
 }
 ?>
 <!doctype html>
@@ -15,19 +32,28 @@ if(isSet($_REQUEST["sisestusnupp"])){
     <title>Kasutaja registreerimine</title>
 </head>
 <body>
+
 <h1>Registreerimine</h1>
+
 <?php
 if(isSet($_REQUEST["lisatudeesnimi"])){
     echo "Lisati $_REQUEST[lisatudeesnimi]";
 }
 ?>
-<form action="?">
+
+<form action="" method="get">
     <dl>
         <dt>Eesnimi:</dt>
-        <dd><input type="text" name="eesnimi" /></dd>
+        <dd><input type="text" name="eesnimi"></dd>
+
         <dt>Perekonnanimi:</dt>
-        <dd><input type="text" name="perekonnanimi" /></dd>
-        <dt><input type="submit" name="sisestusnupp" value="sisesta" /></dt>  </dl>
+        <dd><input type="text" name="perekonnanimi"></dd>
+
+        <dt>
+            <input type="submit" name="sisestusnupp" value="Sisesta">
+        </dt>
+    </dl>
 </form>
+
 </body>
 </html>
