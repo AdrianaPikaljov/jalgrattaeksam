@@ -1,12 +1,14 @@
 <?php
 require_once("konf.php");
 include("header.php");
+require('funkt.php');
 global $yhendus;
+
 
 if (isset($_REQUEST["teooriatulemus"], $_REQUEST["id"])) {
 
-    $tulemus = intval($_REQUEST["teooriatulemus"]);
-    $id = intval($_REQUEST["id"]);
+    $tulemus = ($_REQUEST["teooriatulemus"]);
+    $id = ($_REQUEST["id"]);
 
     if ($tulemus < 10) {
         $kask = $yhendus->prepare("UPDATE jalgrattaeksam SET teooriatulemus=?,slaalom=2,ringtee=2,t2nav=2 WHERE id=?"

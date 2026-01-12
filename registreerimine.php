@@ -11,9 +11,7 @@ if (isset($_REQUEST["sisestusnupp"])) {
     $perekonnanimi = $_REQUEST["perekonnanimi"];
 
     if (strlen($eesnimi) == 0 || strlen($perekonnanimi) == 0) {
-        $teade = "Nimi ei tohi olla tühi!";
-    } elseif (is_numeric($eesnimi) || is_numeric($perekonnanimi)) {
-        $teade = "Nimi ei tohi olla numbriline!";
+    } if (is_numeric($eesnimi) || is_numeric($perekonnanimi)) {
     } else {
         $kask = $yhendus->prepare(
             "INSERT INTO jalgrattaeksam(eesnimi, perekonnanimi) VALUES (?, ?)"

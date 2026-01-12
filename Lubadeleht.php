@@ -5,14 +5,14 @@ include("header.php");
 global $yhendus;
 
 
-if(isset($_REQUEST["kustuta"])){
-    $kask = $yhendus->prepare("DELETE FROM jalgrattaeksam WHERE id=?");
-    $kask->bind_param("i", $_REQUEST["kustuta"]);
-    $kask->execute();
-    $kask->close();
-    header("Location: ".$_SERVER['PHP_SELF']);
-    exit;
+require("funkt.php");
+
+
+if (isset($_REQUEST["kustuta_id"])) {
+    $id = ($_REQUEST["kustuta_id"]);
+    kustuta($id);
 }
+
 
 if(!empty($_REQUEST["vormistamine_id"])){
     $kask = $yhendus->prepare("UPDATE jalgrattaeksam SET luba=1 WHERE id=?");
@@ -58,7 +58,7 @@ function asenda($nr){
         $asendatud_slaalom=asenda($slaalom);
         $asendatud_ringtee=asenda($ringtee);
         $asendatud_t2nav=asenda($t2nav);
-        $kustutalink = "<a href='?kustuta=$id'>Eemalda</a>";
+        $kustutalink = "<a href='?kustuta_id=$id'>Eemalda</a>";
         $loalahter=".";
         if($luba==1){$loalahter="Väljastatud";}
         if($luba==-1 and $t2nav==1){
