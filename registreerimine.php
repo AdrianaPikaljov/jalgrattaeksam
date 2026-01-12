@@ -1,5 +1,6 @@
 <?php
 require_once("konf.php");
+include("header.php");
 global $yhendus;
 if(isSet($_REQUEST["sisestusnupp"])){
     $kask=$yhendus->prepare(

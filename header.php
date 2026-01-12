@@ -11,11 +11,11 @@
     <h1>Jalgrattaeksam</h1>
     <nav>
         <a href="registreerimine.php">Registreerimine</a>
-        <a href="teooriaeksam.php">Teooriaeksam</a>
-        <a href="ringtee.php">Ringtee</a>
-        <a href="slaalom.php">Slaalom</a>
-        <a href="tanav.php">Tänavasõit</a>
-        <a href="lubadeleht.php">Lubadeleht</a>
+        <a href="Teooriaeksam.php">Teooriaeksam</a>
+        <a href="Ringtee.php">Ringtee</a>
+        <a href="Slaalom.php">Slaalom</a>
+        <a href="Tänav.php">Tänavasõit</a>
+        <a href="Lubadeleht.php">Lubadeleht</a>
     </nav>
 </header>
 

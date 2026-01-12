@@ -1,6 +1,7 @@
 <?php
 require_once("konf.php");
 global $yhendus;
+include("header.php");
 if(!empty($_REQUEST["korras_id"])){
     $kask=$yhendus->prepare(
         "UPDATE jalgrattaeksam SET ringtee=1 WHERE id=?");

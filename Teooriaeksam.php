@@ -1,5 +1,6 @@
 <?php
 require_once("konf.php");
+include("header.php");
 global $yhendus;
 if(!empty($_REQUEST["teooriatulemus"])){
     $kask=$yhendus->prepare(
